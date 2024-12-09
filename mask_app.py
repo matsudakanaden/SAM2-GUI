@@ -49,6 +49,7 @@ class PromptGUI(object):
         self.img_dir = ""
         self.img_paths = []
         self.init_sam_model()
+        self.inference_state = None
 
     def init_sam_model(self):
         if self.sam_model is None:
@@ -114,6 +115,7 @@ class PromptGUI(object):
         return image
 
     def get_sam_features(self) -> tuple[str, np.ndarray | None]:
+        self.inference_state = None
         self.inference_state = self.sam_model.init_state(video_path=self.img_dir)
         self.sam_model.reset_state(self.inference_state)
         msg = (
@@ -152,6 +154,8 @@ class PromptGUI(object):
         :param input_labels (np array) (N,)
         return (H, W) mask, (H, W) logits
         """
+        if self.inference_state is None:
+            raise ValueError("SAM features have not been extracted. Please run 'Get SAM features' first.")
         assert self.sam_model is not None
         
 
@@ -545,4 +549,4 @@ if __name__ == "__main__":
         args.img_name,
         args.mask_name
     )
-    demo.launch(server_port=args.port)
+    demo.launch(server_port=args.port, share=True)
