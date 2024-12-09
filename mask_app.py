@@ -385,7 +385,7 @@ def make_demo(
             return seq_name, vid_path
 
         def extract_frames(
-            root_dir, vid_name, img_name, vid_file, start, end, fps, height, ext="png"
+            root_dir, vid_name, img_name, vid_file, start, end, fps, height, ext="jpg"
         ):
             seq_name = os.path.splitext(vid_file)[0]
             vid_path = f"{root_dir}/{vid_name}/{vid_file}"
